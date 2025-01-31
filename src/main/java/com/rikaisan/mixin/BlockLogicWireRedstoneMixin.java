@@ -23,10 +23,9 @@ public abstract class BlockLogicWireRedstoneMixin {
 	@Shadow
 	private boolean shouldSignal;
 
-	// TODO: See if this can become an injection instead of an overwrite.
 	/**
 	 * @author Rikai
-	 * @reason Refactor + Fix redirection
+	 * @reason Refactor + fix redirection logic. Couldn't manage to inject the return and honestly don't want anyone to mess with this logic.
 	 */
 	@Overwrite
 	public boolean getSignal(WorldSource worldSource, int x, int y, int z, Side side) {
