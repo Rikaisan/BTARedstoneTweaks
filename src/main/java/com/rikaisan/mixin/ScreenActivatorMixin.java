@@ -6,13 +6,19 @@ import net.minecraft.client.gui.ButtonElement;
 import net.minecraft.client.gui.container.ScreenActivator;
 import net.minecraft.client.gui.container.ScreenContainerAbstract;
 import net.minecraft.core.InventoryAction;
+import net.minecraft.core.block.Blocks;
 import net.minecraft.core.block.entity.TileEntityActivator;
+import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.player.inventory.container.ContainerInventory;
 import net.minecraft.core.player.inventory.menu.MenuAbstract;
 import net.minecraft.core.sound.SoundCategory;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +39,13 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 		super(container);
 	}
 
-	/*
-	 * TODO: See if this can become an injection instead of an overwrite.
-	 * Maybe making this.mc.thePlayer.inventory.getHeldItemStack() always return something and injecting before the return?
-	 */
-	/**
-	 * @author Rikai
-	 * @reason Allow left-clicking to lock slots, unlocking with held items and middle-clicking to lock/unlock blank slots
-	 */
-	@Overwrite
-	public void clickInventory(int x, int y, int mouseButton) {
+	@Redirect(method = "clickInventory(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/player/inventory/container/ContainerInventory;getHeldItemStack()Lnet/minecraft/core/item/ItemStack;"))
+	public ItemStack getHeldItemStack(ContainerInventory instance) {
+		return new ItemStack(Blocks.STONE); // Dummy stack to never run default logic
+	}
+
+	@Inject(method = "clickInventory(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/container/ScreenContainerAbstract;clickInventory(III)V"), cancellable = true)
+	public void clickInventory(int x, int y, int mouseButton, CallbackInfo ci) {
 		if (mouseButton == 2) {
 			List<ButtonElement> lockedSlots = new ArrayList<>();
 			List<ButtonElement> unlockedSlots = new ArrayList<>();
@@ -66,7 +69,7 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 			}
 
 			this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
-			return;
+			ci.cancel();
 		}
 
 		if (mouseButton == 0 || mouseButton == 1) {
@@ -76,11 +79,9 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 					if (button.playSound) {
 						this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
 					}
-					return;
+					ci.cancel();
 				}
 			}
 		}
-
-		super.clickInventory(x, y, mouseButton);
 	}
 }
