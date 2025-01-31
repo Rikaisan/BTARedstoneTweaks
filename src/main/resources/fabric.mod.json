@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "redstonetweaks",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This mod aims to help new BTA modders.",
+  "name": "Redstone Tweaks",
+  "description": "Bundle of changes to redstone in BTA!",
   "authors": [
-    "Turnip Labs"
+    "Rikai"
   ],
   "contact": {
     "homepage": "",
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+			"com.rikaisan.RedstoneTweaks"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"com.rikaisan.RedstoneTweaks"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"com.rikaisan.RedstoneTweaks"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+			"com.rikaisan.RedstoneTweaks"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+		"redstonetweaks.mixins.json"
   ],
 
   "depends": {
