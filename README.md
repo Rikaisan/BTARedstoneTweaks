@@ -4,14 +4,21 @@ A mod to improve BTA! redstone :)
 
 ## Tweaks
 
-- Redstone wire now properly handles redstone redirection
+### Changes
 - Redstone wire is no longer redirected by diagonal power sources (e.g. lever at the side of the block the wire is on)
-- Redstone wire no longer visually connects to things it isn't logically connected to
-- Redstone Jack o' lanterns now properly behaves as a solid block, allowing the block to be powered
-- Redstone Jack o' lanterns redirects signal
+- Redstone Jack o' lanterns behaves as a solid block, allowing the block to be powered
+- Redstone Jack o' lanterns isolate the front face from the rest of the redstone going though it
+- Redstone Jack o' lanterns can be now used as a semi-target block
 - Redstone blocks no longer hard power adjacent blocks
 - Activator block now allows using left click to lock/unlock slots
 - Activator block now allows unlocking slots while holding an item
+
+### Fixes
+- Redstone wire now properly handles redstone redirection
+- Redstone wire no longer visually connects to things it isn't logically connected to
+- Repeaters now properly connect to redstone dust
+- Repeaters now properly soft power some blocks and redstone components
+- Repeaters now send updates when removed
 
 ## To-do list
 
