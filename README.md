@@ -9,7 +9,7 @@ A mod to improve BTA! redstone :)
 - Redstone Jack o' lanterns behaves as a solid block, allowing the block to be powered
 - Redstone Jack o' lanterns isolate the front face from the rest of the redstone going though it
 - Redstone Jack o' lanterns can be now used as a semi-target block
-- Redstone blocks no longer hard power adjacent blocks
+- Redstone blocks no longer hard power adjacent blocks (toggleable with the gamerule `redstoneBlockHardPower`)
 - Activator block now allows using left click to lock/unlock slots
 - Activator block now allows unlocking slots while holding an item
 - Activator block now allows locking/unlocking all unused slots with middle click

@@ -1,5 +1,6 @@
 package com.rikaisan.mixin;
 
+import com.rikaisan.RedstoneTweaks;
 import net.minecraft.core.block.BlockLogicRedstone;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
@@ -15,6 +16,6 @@ public abstract class BlockLogicRedstoneMixin {
 	 */
 	@Overwrite
 	public boolean getDirectSignal(World world, int x, int y, int z, Side side) {
-		return false;
+			return world.getGameRuleValue(RedstoneTweaks.REDSTONE_BLOCK_HARD_POWER);
 	}
 }
