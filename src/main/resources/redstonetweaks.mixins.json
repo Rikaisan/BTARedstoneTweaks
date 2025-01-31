@@ -9,7 +9,8 @@
     "WorldMixin"
   ],
   "client": [
-    "BlockModelWireRedstoneMixin"
+    "BlockModelWireRedstoneMixin",
+    "ScreenActivatorMixin"
   ],
   "injectors": {
     "defaultRequire": 1
