@@ -24,6 +24,7 @@ A mod to improve BTA! redstone :)
 - Fix trapdoors closing when adjacent blocks are updated
 - Fix directionality (monostable circuits suck in BTA!)
 - Fix positional inconsistencies
+- Add a cool icon :)
 
 ### Maybe
 - Add observer functionality to motion sensor
