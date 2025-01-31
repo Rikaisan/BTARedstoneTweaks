@@ -11,13 +11,14 @@ A mod to improve BTA! redstone :)
 - Redstone Jack o' lanterns redirects signal
 - Redstone blocks no longer hard power adjacent blocks
 - Activator block now allows using left click to lock/unlock slots
+- Activator block now allows unlocking slots while holding an item
 
 ## To-do list
 
 ### Defined
 - Make a targeteable block (easy with the new system!)
 - Allow some sort for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs or another glass type?
-- Allow unlocking activator slots with an item in the cursor
+- Use middle click to lock/unlock all unused Activator slots
 - Add a config menu to allow enabling/disabling some tweaks
 - Allow a slot to be used twice on an activator (e.g. bucket in a sequence of steps would be able to be handled properly)
 - Fix trapdoors closing when adjacent blocks are updated

@@ -38,14 +38,14 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 	 */
 	@Overwrite
 	public void clickInventory(int x, int y, int mouseButton) {
-		if ((mouseButton == 0 || mouseButton == 1) && this.mc.thePlayer.inventory.getHeldItemStack() == null) {
+		if (mouseButton == 0 || mouseButton == 1) {
 			for (ButtonElement button : this.slotButtons) {
-				if (this.tileEntityActivator.getItem(button.id) == null && button.mouseClicked(this.mc, x, y)) {
+				if (button.mouseClicked(this.mc, x, y) && (this.tileEntityActivator.locked(button.id) || (this.tileEntityActivator.getItem(button.id) == null && this.mc.thePlayer.inventory.getHeldItemStack() == null))) {
 					this.mc.playerController.handleInventoryMouseClick(this.inventorySlots.containerId, InventoryAction.LOCK, new int[]{button.id, 0}, this.mc.thePlayer);
 					if (button.playSound) {
 						this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
 					}
-					break;
+					return;
 				}
 			}
 		}
