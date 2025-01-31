@@ -1,6 +1,8 @@
 package com.rikaisan.mixin;
 
 import com.rikaisan.AdditionalRedstoneWireLogic;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.block.model.BlockModelStandard;
 import net.minecraft.client.render.block.model.BlockModelWireRedstone;
 import net.minecraft.core.block.Block;
@@ -12,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
+@Environment(EnvType.CLIENT)
 @Mixin(value = BlockModelWireRedstone.class, remap = false)
 public abstract class BlockModelWireRedstoneMixin<T extends BlockLogic> extends BlockModelStandard<T> {
 
