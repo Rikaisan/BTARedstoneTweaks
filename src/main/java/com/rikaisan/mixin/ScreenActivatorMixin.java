@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -38,6 +39,32 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 	 */
 	@Overwrite
 	public void clickInventory(int x, int y, int mouseButton) {
+		if (mouseButton == 2) {
+			List<ButtonElement> lockedSlots = new ArrayList<>();
+			List<ButtonElement> unlockedSlots = new ArrayList<>();
+			for (ButtonElement button : this.slotButtons) {
+				if (this.tileEntityActivator.getItem(button.id) != null) continue;
+				if (this.tileEntityActivator.locked(button.id)) {
+					lockedSlots.add(button);
+				} else {
+					unlockedSlots.add(button);
+				}
+			}
+
+			if (unlockedSlots.isEmpty()) {
+				for (ButtonElement button : lockedSlots) {
+					this.tileEntityActivator.lockSlot(button.id, false);
+				}
+			} else {
+				for (ButtonElement button : unlockedSlots) {
+					this.tileEntityActivator.lockSlot(button.id, true);
+				}
+			}
+
+			this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
+			return;
+		}
+
 		if (mouseButton == 0 || mouseButton == 1) {
 			for (ButtonElement button : this.slotButtons) {
 				if (button.mouseClicked(this.mc, x, y) && (this.tileEntityActivator.locked(button.id) || (this.tileEntityActivator.getItem(button.id) == null && this.mc.thePlayer.inventory.getHeldItemStack() == null))) {
