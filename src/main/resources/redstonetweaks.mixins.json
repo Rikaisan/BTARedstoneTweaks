@@ -4,9 +4,11 @@
   "package": "com.rikaisan.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BlockLogicWireRedstoneMixin",
     "WorldMixin"
   ],
   "client": [
+    "BlockModelWireRedstoneMixin"
   ],
   "injectors": {
     "defaultRequire": 1
