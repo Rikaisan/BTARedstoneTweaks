@@ -1,37 +1,31 @@
-# Example Mod
+# Redstone Tweaks
 
-Template for making Babric mods for BTA!
+A mod to improve BTA! redstone :)
 
-**Note: *DO NOT fork this repository unless you want to contribute!***
+## Tweaks
 
-## Prerequisites
-- JDK for Java 17 ([Eclipse Temurin](https://adoptium.net/temurin/releases/) recommended)
-- [Intellij IDEA](https://www.jetbrains.com/idea/download/) (Scroll down for the free community edition, if using linux **DO NOT** use the flatpak distribution)
-- Minecraft Development plugin (Optional, but highly recommended)
+- Redstone wire now properly handles redstone redirection
+- Redstone wire no longer connects to blocks diagonally
+- Redstone Jack o' lanterns now properly behave as a solid block, allowing the block to be powered
+- Redstone Jack o' lanterns redirect signal
+- Redstone blocks no longer hard power adjacent blocks
+- Activator block now allows using left click to lock/unlock slots
 
-## Setup instructions
-   
+## To-do list
 
-1. Click the `Use this template` button on this repo's page above (Will only appear if logged in). Choose `Create a new repository`, you will be redirected to a new page. Enter your repo's name and description, and hit `Create repository`.  
-   To get your project, open IntelliJ IDEA and click `Get from VCS`. Select `Repository URL` and enter your repo's url
+### Defined
+- Make some block targeteable (easy with the new system!)
+- Make a certain block allow for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs?
+- Allow unlocking activator slots with an item in the cursor
+- Add a config menu to allow enabling/disabling some tweaks
+- Allow a slot to be used twice on an activator (bucket in a sequence of steps)
+- Fix trapdoors closing when adjacent blocks are updated
+- Fix directionality (monostable circuits suck in BTA!)
+- Fix positional inconsistencies
 
-2. After the project has finished importing, close it and open it again.  
-   If that does not work, open the right sidebar with `Gradle` on it, open `Tasks` > `fabric` and run `ideaSyncTask`.
-
-3. Create a new run configuration by going in `Run > Edit Configurations`.  
-   Then click on the plus icon and select Gradle. In the `Tasks and Arguments` field enter `build`.  
-   Running it will build your finished jar files and put them in `build/libs/`.
-
-4. Lastly, open `File` > `Settings` and head to `Build, Execution, Development` > `Build Tools` > `Gradle`.  
-   Make sure `Build and run using` and `Run tests using` is set to `Gradle`.
-
-5. Done! Now, all that's left is to change every mention of `examplemod` and `turniplabs` to your own mod id and mod group, respectively. Happy modding!
-
-## Tips
-
-1. If you haven't already you should join the BTA modding discord! https://discord.gg/FTUNJhswBT
-2. You can set your username when launching the client run configuration by setting `--username <username>` in your program arguments.
-3. When launching the server run configuration you may want to remove the `nogui` program argument in order to see the regular server GUI.
-4. In Intellij you can double press shift or press ctrl+N to search class files, change the search from the default `Project Files` to `All Places` you can easily explore the classes for you dependencies and even BTA itself.
-5. In Intellij if ctrl+left click on a field or method you can quickly get information on when and where that field or method is assign or used.
-
+### Maybe
+- Add observer functionality to motion sensor
+- Make activator be able to retake some items like discs from jukeboxes?
+- Make activator be able to plant seeds from below farmland
+- Activator rail
+- Minecart with basket, going over mesh blocks drops items in order and over golden mesh blocks only a certain item.
