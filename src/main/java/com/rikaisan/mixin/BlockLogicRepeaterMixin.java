@@ -14,16 +14,20 @@ public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 	public BlockLogicRepeaterMixin(Block<?> block, Material material) {
 		super(block, material);
 	}
+
 	// Ensure that repeaters can activate doors, tnt, and other redstone components through powering a neighboring block.
 	@Override
 	public boolean isSignalSource() {
 		return true;
 	}
+
 	// Cause block updates on the target block when removing a repeater,
 	// which prevents redstone components on the other wide of the target block from staying powered.
 	@Override
 	public void onBlockRemoved(World world, int x, int y, int z, int data) {
-		Side facing = BlockLogicBed.headBlockToFootBlockMap[BlockLogicBed.footToHeadMap[data & 3]];
-		world.notifyBlocksOfNeighborChange(x + facing.getOffsetX(), y + facing.getOffsetY(), z + facing.getOffsetZ(), id());
+		Side front = BlockLogicBed.headBlockToFootBlockMap[BlockLogicBed.footToHeadMap[data & 3]];
+		world.notifyBlocksOfNeighborChange(x + front.getOffsetX(), y + front.getOffsetY(), z + front.getOffsetZ(), id());
+		Side back = front.getOpposite();
+		world.notifyBlocksOfNeighborChange(x + back.getOffsetX(), y + back.getOffsetY(), z + back.getOffsetZ(), id());
 	}
 }
