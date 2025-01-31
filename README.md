@@ -5,7 +5,7 @@ A mod to improve BTA! redstone :)
 ## Tweaks
 
 ### Changes
-- Redstone wire is no longer redirected by diagonal power sources (e.g. lever at the side of the block the wire is on)
+- Redstone wire is no longer redirected by diagonal power sources (e.g. lever at the side of the block the wire is on)  [This is NOT related to QC]
 - Redstone Jack o' lanterns behaves as a solid block, allowing the block to be powered
 - Redstone Jack o' lanterns isolate the front face from the rest of the redstone going though it
 - Redstone Jack o' lanterns can be now used as a semi-target block
