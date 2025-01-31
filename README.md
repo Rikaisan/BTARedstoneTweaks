@@ -32,7 +32,6 @@ A mod to improve BTA! redstone :)
 - Fix directionality (monostable circuits suck in BTA!)
 - Fix positional inconsistencies
 - Fix update queue being reset on dimension change and world reload
-- Add a cool icon :)
 
 ### Maybe
 - Add observer functionality to motion sensor
