@@ -37,15 +37,6 @@ public abstract class WorldMixin {
 	}
 
 	@Shadow
-	public abstract boolean isBlockNormalCube(int x, int y, int z);
-
-	@Shadow
-	public abstract boolean hasDirectSignal(int x, int y, int z);
-
-	@Shadow
-	public abstract Block<?> getBlock(int x, int y, int z);
-
-	@Shadow
 	public abstract boolean getDirectSignal(int x, int y, int z, Side side);
 
 	@Shadow
