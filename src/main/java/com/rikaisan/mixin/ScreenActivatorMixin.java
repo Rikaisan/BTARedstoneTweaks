@@ -33,9 +33,13 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 		super(container);
 	}
 
+	/*
+	 * TODO: See if this can become an injection instead of an overwrite.
+	 * Maybe making this.mc.thePlayer.inventory.getHeldItemStack() always return something and injecting before the return?
+	 */
 	/**
 	 * @author Rikai
-	 * @reason Allow left-clicking to lock slots
+	 * @reason Allow left-clicking to lock slots, unlocking with held items and middle-clicking to lock/unlock blank slots
 	 */
 	@Overwrite
 	public void clickInventory(int x, int y, int mouseButton) {

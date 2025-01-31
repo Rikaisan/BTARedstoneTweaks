@@ -23,6 +23,7 @@ public abstract class BlockLogicWireRedstoneMixin {
 	@Shadow
 	private boolean shouldSignal;
 
+	// TODO: See if this can become an injection instead of an overwrite.
 	/**
 	 * @author Rikai
 	 * @reason Refactor + Fix redirection
