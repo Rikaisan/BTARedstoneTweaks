@@ -24,7 +24,7 @@ public abstract class BlockModelWireRedstoneMixin<T extends BlockLogic> extends 
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;shouldConnectTo(Lnet/minecraft/core/world/WorldSource;IIII)Z"))
-	private boolean a(WorldSource worldSource, int x, int y, int z, int data, Operation<Boolean> original, @Local(name = "y") int originalY) {
+	private boolean fixDiagonal(WorldSource worldSource, int x, int y, int z, int data, Operation<Boolean> original, @Local(name = "y") int originalY) {
 		if(y == originalY - 1) return AdditionalRedstoneWireLogic.shouldConnectToDiagonal(worldSource, x, y, z, data, Side.TOP);
 		if(y == originalY + 1) return AdditionalRedstoneWireLogic.shouldConnectToDiagonal(worldSource, x, y, z, data, Side.BOTTOM);
 		return original.call(worldSource, x, y, z, data);
