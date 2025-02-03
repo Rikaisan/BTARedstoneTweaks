@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(value = BlockLogicRedstone.class, remap = false)
 public abstract class BlockLogicRedstoneMixin {
 
+	/// Make redstone blocks weak power instead of strong power, unless the relevant gamerule is set.
 	@WrapMethod(method = "getDirectSignal(Lnet/minecraft/core/world/World;IIILnet/minecraft/core/util/helper/Side;)Z")
 	public boolean getDirectSignal(World world, int x, int y, int z, Side side, Operation<Boolean> original) {
 		if(world.getGameRuleValue(RedstoneTweaks.REDSTONE_BLOCK_HARD_POWER)) return original.call(world, x, y, z, side);
