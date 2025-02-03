@@ -32,7 +32,7 @@ public abstract class BlockLogicWireRedstoneMixin {
 
 	@Definition(id = "negZShouldConnectTo", local = @Local(type = boolean.class, name = "negZShouldConnectTo"))
 	@Expression("negZShouldConnectTo")
-	@Inject(method = "getSignal", at = @At("MIXINEXTRAS:EXPRESSION"), cancellable = true)
+	@Inject(method = "getSignal", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 0), cancellable = true)
 	private void fixRedirections(WorldSource worldSource, int x, int y, int z, Side side, CallbackInfoReturnable<Boolean> cir, @Local(name = "posXShouldConnectTo") boolean posXShouldConnectTo, @Local(name = "negXShouldConnectTo") boolean negXShouldConnectTo, @Local(name = "posZShouldConnectTo") boolean posZShouldConnectTo, @Local(name = "negZShouldConnectTo") boolean negZShouldConnectTo) {
 		boolean isXConnected = posXShouldConnectTo || negXShouldConnectTo;
 		boolean isZConnected = posZShouldConnectTo || negZShouldConnectTo;
