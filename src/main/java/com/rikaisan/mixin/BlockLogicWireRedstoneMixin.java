@@ -49,10 +49,12 @@ public abstract class BlockLogicWireRedstoneMixin {
 			|| side == Side.WEST && negXShouldConnectTo && !isZConnected
 			|| side == Side.EAST && posXShouldConnectTo && !isZConnected);
 	}
+	
 	@ModifyExpressionValue(method = "shouldConnectTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;isSignalSource()Z"))
 	private static boolean dontConnectRedstonePumpkin(boolean original, @Local(name = "blockId") int blockId) {
 		return original && blockId != Blocks.PUMPKIN_REDSTONE.id();
 	}
+	
 	/// Connect to both the front and back of the repeater, instead of only the back.
 	@Inject(method = "shouldConnectTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/WorldSource;getBlockMetadata(III)I", ordinal = 1), cancellable = true)
 	private static void connectToFrontBackRepeater(WorldSource worldSource, int x, int y, int z, int data, CallbackInfoReturnable<Boolean> cir) {
