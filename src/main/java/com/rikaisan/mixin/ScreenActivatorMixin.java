@@ -49,7 +49,11 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 		if (mouseButton == 2) {
 			List<ButtonElement> lockedSlots = new ArrayList<>();
 			List<ButtonElement> unlockedSlots = new ArrayList<>();
+			boolean activatorSlotWasClicked = false;
 			for (ButtonElement button : this.slotButtons) {
+				if (button.mouseClicked(this.mc, x, y))
+					activatorSlotWasClicked = true;
+
 				if (this.tileEntityActivator.getItem(button.id) != null) continue;
 				if (this.tileEntityActivator.locked(button.id)) {
 					lockedSlots.add(button);
@@ -58,18 +62,20 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 				}
 			}
 
-			if (unlockedSlots.isEmpty()) {
-				for (ButtonElement button : lockedSlots) {
-					this.tileEntityActivator.lockSlot(button.id, false);
+			if (activatorSlotWasClicked) {
+				if (unlockedSlots.isEmpty()) {
+					for (ButtonElement button : lockedSlots) {
+						this.tileEntityActivator.lockSlot(button.id, false);
+					}
+				} else {
+					for (ButtonElement button : unlockedSlots) {
+						this.tileEntityActivator.lockSlot(button.id, true);
+					}
 				}
-			} else {
-				for (ButtonElement button : unlockedSlots) {
-					this.tileEntityActivator.lockSlot(button.id, true);
-				}
-			}
 
-			this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
-			ci.cancel();
+				this.mc.sndManager.playSound("random.click", SoundCategory.GUI_SOUNDS, 1.0F, 1.0F);
+				ci.cancel();
+			}
 		}
 
 		if (mouseButton == 0 || mouseButton == 1) {
