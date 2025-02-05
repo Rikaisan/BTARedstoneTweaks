@@ -42,7 +42,7 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 	@Definition(id = "mouseButton", local = @Local(type = int.class, ordinal = 2, argsOnly = true))
 	@Expression("mouseButton == 1")
 	@ModifyExpressionValue(method = "clickInventory", at = @At("MIXINEXTRAS:EXPRESSION"))
-	public boolean a(boolean original) {
+	public boolean preventDefaultClick(boolean original) {
 		return false;
 	}
 
