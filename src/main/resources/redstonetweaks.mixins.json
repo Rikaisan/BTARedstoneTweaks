@@ -11,6 +11,7 @@
     "BlockLogicRedstoneMixin",
     "BlockLogicRepeaterMixin",
     "BlockLogicWireRedstoneMixin",
+    "ItemSeedsMixin",
     "WorldMixin"
   ],
   "client": [
