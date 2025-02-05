@@ -8,12 +8,17 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.block.model.BlockModelStandard;
 import net.minecraft.client.render.block.model.BlockModelWireRedstone;
+import net.minecraft.client.render.texture.stitcher.IconCoordinate;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogic;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.WorldSource;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Slice;
 
 @Environment(EnvType.CLIENT)
 @Mixin(value = BlockModelWireRedstone.class, remap = false)
@@ -22,6 +27,30 @@ public abstract class BlockModelWireRedstoneMixin<T extends BlockLogic> extends 
 	public BlockModelWireRedstoneMixin(Block<T> block) {
 		super(block);
 	}
+
+	/// Fix for dust becoming a cross when cut off by a transparent block.
+	@Redirect(
+		method = "render(Lnet/minecraft/client/render/tessellator/Tessellator;III)Z",
+		slice = @Slice(
+			from = @At(
+				value = "INVOKE",
+				target = "Lnet/minecraft/core/world/WorldSource;isBlockNormalCube(III)Z",
+				ordinal = 0
+			),
+			to = @At(
+				value = "INVOKE",
+				target = "Lnet/minecraft/core/world/WorldSource;isBlockNormalCube(III)Z",
+				ordinal = 3
+			)
+		),
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/core/world/WorldSource;isBlockNormalCube(III)Z"
+		))
+	public boolean isBlockNormalCube(WorldSource instance, int x, int y, int z) {
+		return instance.isBlockOpaqueCube(x, y, z);
+	}
+
 
 	/// Fix for vertically diagonal signal sources, to make behaviour match modern vanilla redstone connections
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;shouldConnectTo(Lnet/minecraft/core/world/WorldSource;IIII)Z"))
