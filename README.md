@@ -12,11 +12,14 @@ A mod to improve BTA! redstone :)
 - Activator block now allows using left click to lock/unlock slots
 - Activator block now allows unlocking slots while holding an item
 - Activator block now allows locking/unlocking all unused slots with middle click
+- Activator block now allows using seeds directly on farmland
 - Redstone ore now redirects redstone dust
+- Levers are now placed parallel to the player's view instead of perpendicularly
 
 ### Fixes
 - Redstone wire now properly handles redstone redirection
 - Redstone wire no longer visually connects to things it isn't logically connected to
+- Redstone wire now uses the same checks to visually connect diagonally downwards than upwards
 - Repeaters now properly connect to redstone dust
 - Repeaters now properly soft power some blocks and redstone components
 - Repeaters now send updates when removed
