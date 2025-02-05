@@ -7,6 +7,7 @@
   "package": "com.rikaisan.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BlockLogicLeverMixin",
     "BlockLogicOreRedstoneMixin",
     "BlockLogicRedstoneMixin",
     "BlockLogicRepeaterMixin",
