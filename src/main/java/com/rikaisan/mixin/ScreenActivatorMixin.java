@@ -1,15 +1,16 @@
 package com.rikaisan.mixin;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.ButtonElement;
 import net.minecraft.client.gui.container.ScreenActivator;
 import net.minecraft.client.gui.container.ScreenContainerAbstract;
 import net.minecraft.core.InventoryAction;
-import net.minecraft.core.block.Blocks;
 import net.minecraft.core.block.entity.TileEntityActivator;
-import net.minecraft.core.item.ItemStack;
-import net.minecraft.core.player.inventory.container.ContainerInventory;
 import net.minecraft.core.player.inventory.menu.MenuAbstract;
 import net.minecraft.core.sound.SoundCategory;
 import org.spongepowered.asm.mixin.Final;
@@ -17,7 +18,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
@@ -39,9 +39,11 @@ public abstract class ScreenActivatorMixin extends ScreenContainerAbstract {
 		super(container);
 	}
 
-	@Redirect(method = "clickInventory(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/player/inventory/container/ContainerInventory;getHeldItemStack()Lnet/minecraft/core/item/ItemStack;"))
-	public ItemStack getHeldItemStack(ContainerInventory instance) {
-		return new ItemStack(Blocks.STONE); // Dummy stack to never run default logic
+	@Definition(id = "mouseButton", local = @Local(type = int.class, ordinal = 2, argsOnly = true))
+	@Expression("mouseButton == 1")
+	@ModifyExpressionValue(method = "clickInventory", at = @At("MIXINEXTRAS:EXPRESSION"))
+	public boolean a(boolean original) {
+		return false;
 	}
 
 	@Inject(method = "clickInventory(III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/container/ScreenContainerAbstract;clickInventory(III)V"), cancellable = true)
