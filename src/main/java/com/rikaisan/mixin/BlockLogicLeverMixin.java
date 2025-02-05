@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.*;
 public class BlockLogicLeverMixin {
 
 	@Redirect(method = "onBlockPlacedByMob", at = @At(value = "FIELD", target = "Lnet/minecraft/core/util/helper/Axis;Z:Lnet/minecraft/core/util/helper/Axis;"))
-	private Axis a() {
+	private Axis useOtherAxis() {
 		return Axis.X;
 	}
 }
