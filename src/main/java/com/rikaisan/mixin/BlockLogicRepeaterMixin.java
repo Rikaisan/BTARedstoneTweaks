@@ -1,15 +1,15 @@
 package com.rikaisan.mixin;
 
-import net.minecraft.core.block.Block;
-import net.minecraft.core.block.BlockLogic;
-import net.minecraft.core.block.BlockLogicBed;
-import net.minecraft.core.block.BlockLogicRepeater;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.core.block.*;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(BlockLogicRepeater.class)
+@Mixin(value = BlockLogicRepeater.class, remap = false)
 public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 	public BlockLogicRepeaterMixin(Block<?> block, Material material) {
 		super(block, material);
@@ -29,5 +29,11 @@ public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 		world.notifyBlocksOfNeighborChange(x + front.getOffsetX(), y + front.getOffsetY(), z + front.getOffsetZ(), id());
 		Side back = front.getOpposite();
 		world.notifyBlocksOfNeighborChange(x + back.getOffsetX(), y + back.getOffsetY(), z + back.getOffsetZ(), id());
+	}
+
+	// Fix the 1 tick pulse when placing a repeater next to a powered block
+	@ModifyExpressionValue(method = "updateTick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/block/BlockLogicRepeater;isRepeaterPowered:Z", ordinal = 1))
+	private boolean checkGettingPowered(boolean original, @Local(name = "flag") boolean flag) {
+		return original || !flag;
 	}
 }
