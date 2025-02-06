@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class WorldMixin {
 
 	@Redirect(method = "getSignal(IIILnet/minecraft/core/util/helper/Side;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;getSignal(Lnet/minecraft/core/world/WorldSource;IIILnet/minecraft/core/util/helper/Side;)Z"))
-	public boolean getSignal(Block<?> instance, WorldSource worldSource, int x, int y, int z, Side side) {
+	private boolean getSignal(Block<?> instance, WorldSource worldSource, int x, int y, int z, Side side) {
 		if (instance == Blocks.PUMPKIN_REDSTONE) {
 			return pumpkinHasDirectSignal(x, y, z) || instance.getSignal(worldSource, x, y, z, side);
 		} else {
