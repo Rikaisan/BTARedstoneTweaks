@@ -30,8 +30,10 @@ public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 		Side back = front.getOpposite();
 		world.notifyBlocksOfNeighborChange(x + back.getOffsetX(), y + back.getOffsetY(), z + back.getOffsetZ(), id());
 	}
+
+	// Fix the 1 tick pulse when placing a repeater next to a powered block
 	@ModifyExpressionValue(method = "updateTick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/block/BlockLogicRepeater;isRepeaterPowered:Z", ordinal = 1))
-	private boolean preventPlaceFlicker(boolean original, @Local(name = "flag") boolean flag) {
+	private boolean checkGettingPowered(boolean original, @Local(name = "flag") boolean flag) {
 		return original || !flag;
 	}
 }
