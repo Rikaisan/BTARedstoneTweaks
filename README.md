@@ -23,6 +23,7 @@ A mod to improve BTA! redstone :)
 - Repeaters now properly connect to redstone dust
 - Repeaters now properly soft power some blocks and redstone components
 - Repeaters now send updates when removed
+- Repeaters no longer send a 1 tick pulse when placed next to a powered block
 - Redstone Jack o' lanterns no longer redirect redstone on all sides
 
 ## To-do list
