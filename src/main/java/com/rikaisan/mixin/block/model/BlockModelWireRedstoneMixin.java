@@ -1,4 +1,4 @@
-package com.rikaisan.mixin;
+package com.rikaisan.mixin.block.model;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

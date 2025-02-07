@@ -1,5 +1,7 @@
 package com.rikaisan.mixin;
 
+import alternate.current.interfaces.IAlternateCurrentWorld;
+import alternate.current.wire.WireHandler;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.Blocks;
 import net.minecraft.core.util.helper.Side;
@@ -12,7 +14,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = World.class, remap = false)
-public abstract class WorldMixin {
+public abstract class WorldMixin implements IAlternateCurrentWorld {
+
+	@Unique
+	private final WireHandler wireHandler = new WireHandler((World)(Object)this);
 
 	@Redirect(method = "getSignal(IIILnet/minecraft/core/util/helper/Side;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;getSignal(Lnet/minecraft/core/world/WorldSource;IIILnet/minecraft/core/util/helper/Side;)Z"))
 	private boolean getSignal(Block<?> instance, WorldSource worldSource, int x, int y, int z, Side side) {
@@ -41,5 +46,8 @@ public abstract class WorldMixin {
 
 	@Shadow
 	public abstract int getBlockMetadata(int x, int y, int z);
+
+	@Override
+	public WireHandler redstoneTweaks$getWireHandler() { return wireHandler; }
 }
 
