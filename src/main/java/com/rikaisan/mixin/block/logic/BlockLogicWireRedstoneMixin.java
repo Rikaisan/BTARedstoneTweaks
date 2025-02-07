@@ -34,42 +34,33 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 	// Alternate Current
 	// --------------------------------------------------------------------------------
 
-	@Inject(
-		method = "updatePowerStrength(Lnet/minecraft/core/world/World;III)V",
-		at = @At("HEAD"),
-		cancellable = true
-	)
-	private void updatePowerStrength(World world, int x, int y, int z, CallbackInfo ci) {
-		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
-			// Using redirects for calls to this method makes conflicts with
-			// other mods more likely, so we inject-cancel instead.
-			ci.cancel();
-		}
-	}
-
-	@Inject(
+	@WrapOperation(
 		method = "onBlockPlacedByWorld(Lnet/minecraft/core/world/World;III)V",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;updatePowerStrength(Lnet/minecraft/core/world/World;III)V"
 		)
 	)
-	private void onBlockPlacedByWorld(World world, int x, int y, int z, CallbackInfo ci) {
+	private void onBlockPlacedByWorld(BlockLogicWireRedstone instance, World world, int x, int y, int z, Operation<Void> original) {
 		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
 			((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireAdded(new BlockPos(x, y, z));
+		} else {
+			original.call(instance, world, x, y, z);
 		}
 	}
 
-	@Inject(
+	@WrapOperation(
 		method = "onBlockRemoved(Lnet/minecraft/core/world/World;IIII)V",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;updatePowerStrength(Lnet/minecraft/core/world/World;III)V"
 		)
 	)
-	private void onBlockRemoved(World world, int x, int y, int z, int data, CallbackInfo ci) {
+	private void onBlockRemoved(BlockLogicWireRedstone instance, World world, int x, int y, int z, Operation<Void> original) {
 		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
 			((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireRemoved(new BlockPos(x, y, z), new BlockState(this.id(), world.getBlockMetadata(x, y, z)));
+		} else {
+			original.call(instance, world, x, y, z);
 		}
 	}
 
