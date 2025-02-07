@@ -93,6 +93,29 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 	@Expression("negZShouldConnectTo")
 	@Inject(method = "getSignal", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 0), cancellable = true)
 	private void fixRedirections(WorldSource worldSource, int x, int y, int z, Side side, CallbackInfoReturnable<Boolean> cir, @Local(name = "posXShouldConnectTo") boolean posXShouldConnectTo, @Local(name = "negXShouldConnectTo") boolean negXShouldConnectTo, @Local(name = "posZShouldConnectTo") boolean posZShouldConnectTo, @Local(name = "negZShouldConnectTo") boolean negZShouldConnectTo) {
+
+		// Make wire emit block updates when a redirection happens
+		if (worldSource instanceof World) {
+			World world = (World) worldSource;
+
+			int meta = world.getBlockMetadata(x, y, z);
+			int direction = (meta & (15 << 4)) >> 4; // 0b00000000 00000000 00000000 DDDD0000
+
+			int newDirectionNorth = negZShouldConnectTo ? 1 : 0;
+			int newDirectionSouth = (posZShouldConnectTo ? 1 : 0) << 1;
+			int newDirectionWest = (negXShouldConnectTo ? 1 : 0) << 2;
+			int newDirectionEast = (posXShouldConnectTo ? 1 : 0) << 3;
+			int newDirection = newDirectionNorth | newDirectionSouth | newDirectionWest | newDirectionEast;
+
+			if (direction != newDirection) {
+				newDirection <<= 4;
+				meta &= (~(15 << 4)); // Mask out direction bits
+				meta |= newDirection;
+				world.setBlockMetadata(x, y, z, meta);
+			}
+		}
+
+
 		boolean isXConnected = posXShouldConnectTo || negXShouldConnectTo;
 		boolean isZConnected = posZShouldConnectTo || negZShouldConnectTo;
 		cir.setReturnValue(!isZConnected && !isXConnected && side.getAxis() != Axis.Y // Default single dust
@@ -122,6 +145,13 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 		Side target = BlockLogicBed.headBlockToFootBlockMap[worldSource.getBlockMetadata(x, y, z) & 3];
 		cir.setReturnValue(target == source || target == source.getOpposite());
 	}
+
+//	@Inject(method = "shouldConnectTo", at = @At("HEAD"))
+//	private static void getCurrentDirection(WorldSource worldSource, int x, int y, int z, int data, CallbackInfoReturnable<Boolean> cir) {
+//
+//
+//
+//	}
 
 	/// Required for setting the repeater to be a signal source.
 	/// Otherwise, connectToFrontBackRepeater will not be called, and redstone will redirect to all sides of the repeater.
