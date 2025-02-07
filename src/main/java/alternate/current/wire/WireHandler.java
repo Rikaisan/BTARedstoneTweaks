@@ -352,7 +352,9 @@ public class WireHandler {
 		Node[] oldCache = nodeCache;
 		nodeCache = new Node[oldCache.length << 1];
 
-		System.arraycopy(oldCache, 0, nodeCache, 0, oldCache.length);
+		for (int index = 0; index < oldCache.length; index++) {
+			nodeCache[index] = oldCache[index];
+		}
 
 		fillNodeCache(oldCache.length, nodeCache.length);
 	}
