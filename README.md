@@ -32,17 +32,13 @@ A mod to improve BTA! redstone :)
 
 ### Defined
 - Allow some sort for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs or another glass type?
-- Add a config menu to allow enabling/disabling some tweaks
 - Allow a slot to be used twice on an activator (e.g. bucket in a sequence of steps would be able to be handled properly)
 - Fix trapdoors closing when adjacent blocks are updated
-- Fix directionality (monostable circuits suck in BTA!)
-- Fix positional inconsistencies
 - Fix update queue being reset on dimension change and world reload
 
 ### Maybe
 - Add observer functionality to motion sensor
-- Make activator be able to retake some items like discs from jukeboxes?
-- Make activator be able to plant seeds from below farmland
+- Make activator be able to retake some items like discs from jukeboxes ot items from golden meshes
 - Activator rail
 - Minecart with basket, going over mesh blocks drops items in order and over golden mesh blocks only a certain item.
 
