@@ -87,7 +87,8 @@ public class BlockState {
 
 	public boolean canSurvive(World world, BlockPos pos) {
 		Block<?> block = world.getBlock(pos.x, pos.y, pos.z);
-		return block == null || block == Blocks.WIRE_REDSTONE || block.getMaterial().isReplaceable();
+		Block<?> underBlock = world.getBlock(pos.x, pos.y - 1, pos.z);
+		return (block == null || block == Blocks.WIRE_REDSTONE || block.getMaterial().isReplaceable()) && underBlock != null && underBlock.isCubeShaped();
 	}
 
 	public void dropItems(World world, BlockPos pos) {
