@@ -146,13 +146,6 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 		cir.setReturnValue(target == source || target == source.getOpposite());
 	}
 
-//	@Inject(method = "shouldConnectTo", at = @At("HEAD"))
-//	private static void getCurrentDirection(WorldSource worldSource, int x, int y, int z, int data, CallbackInfoReturnable<Boolean> cir) {
-//
-//
-//
-//	}
-
 	/// Required for setting the repeater to be a signal source.
 	/// Otherwise, connectToFrontBackRepeater will not be called, and redstone will redirect to all sides of the repeater.
 	@ModifyExpressionValue(method = "shouldConnectTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;isSignalSource()Z"))
