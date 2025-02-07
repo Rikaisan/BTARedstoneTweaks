@@ -1,4 +1,4 @@
-package com.rikaisan.mixin;
+package com.rikaisan.mixin.block.logic;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogic;
