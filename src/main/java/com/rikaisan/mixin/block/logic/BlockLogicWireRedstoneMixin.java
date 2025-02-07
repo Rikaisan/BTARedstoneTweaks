@@ -1,5 +1,8 @@
 package com.rikaisan.mixin.block.logic;
 
+import alternate.current.interfaces.IAlternateCurrentWorld;
+import alternate.current.util.BlockPos;
+import alternate.current.util.BlockState;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -7,19 +10,84 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.rikaisan.AdditionalRedstoneWireLogic;
-import net.minecraft.core.block.BlockLogicBed;
-import net.minecraft.core.block.BlockLogicWireRedstone;
-import net.minecraft.core.block.Blocks;
+import com.rikaisan.RedstoneTweaks;
+import net.minecraft.core.block.*;
+import net.minecraft.core.block.material.Material;
 import net.minecraft.core.util.helper.Axis;
 import net.minecraft.core.util.helper.Side;
+import net.minecraft.core.world.World;
 import net.minecraft.core.world.WorldSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = BlockLogicWireRedstone.class, remap = false)
-public abstract class BlockLogicWireRedstoneMixin {
+public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
+
+	public BlockLogicWireRedstoneMixin(Block<?> block, Material material) {
+		super(block, material);
+	}
+
+	// --------------------------------------------------------------------------------
+	// Alternate Current
+	// --------------------------------------------------------------------------------
+
+	@Inject(
+		method = "updatePowerStrength(Lnet/minecraft/core/world/World;III)V",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void updatePowerStrength(World world, int x, int y, int z, CallbackInfo ci) {
+		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
+			// Using redirects for calls to this method makes conflicts with
+			// other mods more likely, so we inject-cancel instead.
+			ci.cancel();
+		}
+	}
+
+	@Inject(
+		method = "onBlockPlacedByWorld(Lnet/minecraft/core/world/World;III)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;updatePowerStrength(Lnet/minecraft/core/world/World;III)V"
+		)
+	)
+	private void onBlockPlacedByWorld(World world, int x, int y, int z, CallbackInfo ci) {
+		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
+			((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireAdded(new BlockPos(x, y, z));
+		}
+	}
+
+	@Inject(
+		method = "onBlockRemoved(Lnet/minecraft/core/world/World;IIII)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;updatePowerStrength(Lnet/minecraft/core/world/World;III)V"
+		)
+	)
+	private void onBlockRemoved(World world, int x, int y, int z, int data, CallbackInfo ci) {
+		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
+			((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireRemoved(new BlockPos(x, y, z), new BlockState(this.id(), world.getBlockMetadata(x, y, z)));
+		}
+	}
+
+	@Inject(
+		method = "onNeighborBlockChange(Lnet/minecraft/core/world/World;IIII)V",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockId, CallbackInfo ci) {
+		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
+			if (((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireUpdated(new BlockPos(x, y, z))) {
+				ci.cancel(); // needed to fix duplication bugs
+			}
+		}
+	}
+
+
+	// --------------------------------------------------------------------------------
 
 	/// Fix for vertically diagonal signal sources, to make behaviour match modern vanilla redstone connections
 	@WrapOperation(method = "getSignal", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;shouldConnectTo(Lnet/minecraft/core/world/WorldSource;IIII)Z"))
