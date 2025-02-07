@@ -70,7 +70,7 @@ public class BlockState {
 	}
 
 	public boolean isConductor() {
-		return block.getMaterial().isSolidBlocking() && block.isCubeShaped();
+		return block.getMaterial().isSolidBlocking() && block.isSolidRender(); // Would use isCubeShaped, but slabs are cube shaped...
 	}
 
 	public boolean isSignalSource() {
