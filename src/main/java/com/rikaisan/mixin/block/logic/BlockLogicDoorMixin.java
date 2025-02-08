@@ -18,8 +18,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = BlockLogicDoor.class, remap = false)
 public class BlockLogicDoorMixin {
 	@Inject(method = "onPoweredBlockChange", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I", ordinal = 1, shift = At.Shift.AFTER))
-	private void a(World world, int x, int y, int z, boolean isPowered, CallbackInfo ci, @Local(name = "meta") LocalIntRef meta, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
+	private void savePowered(World world, int x, int y, int z, boolean isPowered, CallbackInfo ci, @Local(name = "meta") LocalIntRef meta, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
 		isPreviouslyPowered.set(AdditionalDoorLogic.isPowered(meta.get()));
+		if(isPowered == isPreviouslyPowered.get()) return;
 		meta.set(AdditionalDoorLogic.setPowered(meta.get(), isPowered));
 		world.setBlockMetadata(x, y, z, meta.get());
 	}
@@ -28,8 +29,7 @@ public class BlockLogicDoorMixin {
 	@Definition(id = "isPowered", local = @Local(type = boolean.class, ordinal = 0, argsOnly = true))
 	@Expression("isOpen != isPowered")
 	@ModifyExpressionValue(method = "onPoweredBlockChange", at = @At("MIXINEXTRAS:EXPRESSION"))
-	private boolean b(boolean original, @Local(name = "isPowered") boolean isPowered, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
-		System.out.println("Testing previous: " + isPreviouslyPowered + ", new: " + isPowered);
+	private boolean checkPoweredChanged(boolean original, @Local(name = "isPowered") boolean isPowered, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
 		return original && isPowered != isPreviouslyPowered.get();
 	}
 }
