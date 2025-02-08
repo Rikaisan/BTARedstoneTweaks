@@ -15,9 +15,7 @@
     "block.logic.BlockLogicRepeaterMixin",
     "block.logic.BlockLogicTrapDoorMixin",
     "block.logic.BlockLogicWireRedstoneMixin",
-    "block.logic.BlockLogicTrapDoorMixin",
-    "item.ItemSeedsMixin",
-    "WorldMixin"
+    "item.ItemSeedsMixin"
   ],
   "client": [
     "block.model.BlockModelWireRedstoneMixin",
