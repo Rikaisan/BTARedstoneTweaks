@@ -36,4 +36,9 @@ public class BlockLogicTrapDoorMixin {
 	private boolean checkPoweredChanged(boolean original, @Local(name = "isPowered") boolean isPowered, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
 		return original && isPowered != isPreviouslyPowered.get();
 	}
+
+	@ModifyExpressionValue(method = "onNeighborBlockChange", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;isSignalSource()Z"))
+	private boolean alwaysUpdate(boolean original) {
+		return true;
+	}
 }
