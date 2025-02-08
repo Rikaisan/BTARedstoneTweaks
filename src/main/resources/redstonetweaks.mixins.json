@@ -12,6 +12,7 @@
     "block.logic.BlockLogicRedstoneMixin",
     "block.logic.BlockLogicRepeaterMixin",
     "block.logic.BlockLogicWireRedstoneMixin",
+    "block.logic.BlockLogicTrapDoorMixin",
     "item.ItemSeedsMixin",
     "WorldMixin"
   ],
