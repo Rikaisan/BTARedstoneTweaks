@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import com.rikaisan.AdditionalTrapDoorLogic;
+import com.rikaisan.AdditionalDoorTypeLogic;
 import net.minecraft.core.block.BlockLogicTrapDoor;
 import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,9 +23,9 @@ public class BlockLogicTrapDoorMixin {
 	@Expression("isOpened != isPowered")
 	@Inject(method = "onNeighborBlockChange", at = @At("MIXINEXTRAS:EXPRESSION"))
 	private void savePowered(World world, int x, int y, int z, int blockId, CallbackInfo ci, @Local(name = "meta") LocalIntRef meta, @Local(name = "isPowered") boolean isPowered, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
-		isPreviouslyPowered.set(AdditionalTrapDoorLogic.isPowered(meta.get()));
+		isPreviouslyPowered.set(AdditionalDoorTypeLogic.isPowered(meta.get()));
 		if(isPowered == isPreviouslyPowered.get()) return;
-		meta.set(AdditionalTrapDoorLogic.setPowered(meta.get(), isPowered));
+		meta.set(AdditionalDoorTypeLogic.setPowered(meta.get(), isPowered));
 		world.setBlockMetadata(x, y, z, meta.get());
 	}
 
