@@ -7,13 +7,16 @@
   "package": "com.rikaisan.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "WorldMixin",
+    "block.logic.BlockLogicDoorMixin",
     "block.logic.BlockLogicLeverMixin",
     "block.logic.BlockLogicOreRedstoneMixin",
     "block.logic.BlockLogicRedstoneMixin",
     "block.logic.BlockLogicRepeaterMixin",
+    "block.logic.BlockLogicTNTMixin",
+    "block.logic.BlockLogicTrapDoorMixin",
     "block.logic.BlockLogicWireRedstoneMixin",
-    "item.ItemSeedsMixin",
-    "WorldMixin"
+    "item.ItemSeedsMixin"
   ],
   "client": [
     "block.model.BlockModelWireRedstoneMixin",
