@@ -9,6 +9,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.rikaisan.AdditionalDoorTypeLogic;
 import net.minecraft.core.block.BlockLogicDoor;
+import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,12 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = BlockLogicDoor.class, remap = false)
 public class BlockLogicDoorMixin {
+	@Inject(method = "onBlockPlacedOnSide", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockMetadataWithNotify(IIII)V"))
+	private void loadPreviouslyPoweredBlockPlaced(World world, int x, int y, int z, Side side, double xPlaced, double yPlaced, CallbackInfo ci, @Local(name = "meta") LocalIntRef meta) {
+		boolean isPreviouslyPowered = AdditionalDoorTypeLogic.isPowered(meta.get());
+		meta.set(AdditionalDoorTypeLogic.savePowered(world, x, y, z, meta.get(), true, isPreviouslyPowered));
+	}
+
 	@Inject(method = "onPoweredBlockChange", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I", ordinal = 1, shift = At.Shift.AFTER))
-	private void savePowered(World world, int x, int y, int z, boolean isPowered, CallbackInfo ci, @Local(name = "meta") LocalIntRef meta, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
+	private void loadPreviouslyPoweredBlockChanged(World world, int x, int y, int z, boolean isPowered, CallbackInfo ci, @Local(name = "meta") LocalIntRef meta, @Share("isPreviouslyPowered") LocalBooleanRef isPreviouslyPowered) {
 		isPreviouslyPowered.set(AdditionalDoorTypeLogic.isPowered(meta.get()));
-		if(isPowered == isPreviouslyPowered.get()) return;
-		meta.set(AdditionalDoorTypeLogic.setPowered(meta.get(), isPowered));
-		world.setBlockMetadata(x, y, z, meta.get());
+		meta.set(AdditionalDoorTypeLogic.savePowered(world, x, y, z, meta.get(), isPowered, isPreviouslyPowered.get()));
 	}
 
 	@Definition(id = "isOpen", local = @Local(type = boolean.class, ordinal = 1))
