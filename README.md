@@ -6,7 +6,7 @@ A mod to improve BTA! redstone :)
 
 ### Changes
 - Redstone wire is no longer redirected by diagonal power sources (e.g. lever at the side of the block the wire is on)  [This is NOT related to QC]
-- Redstone wire now uses the [Alternate Current](<https://www.curseforge.com/minecraft/mc-mods/alternate-current>) wire implementation (toggleable with the `useAlternateCurrent` gamerule)
+- Redstone wire now uses the [Alternate Current](<https://www.curseforge.com/minecraft/mc-mods/alternate-current>) efficient and non-locational redstone dust implementation (toggleable with the `useAlternateCurrent` gamerule)
 - Redstone Jack o' lanterns behaves as a solid block, allowing the block to be powered
 - Redstone Jack o' lanterns isolate the front face from the rest of the redstone going though it
 - Redstone blocks no longer hard power adjacent blocks (toggleable with the gamerule `redstoneBlockHardPower`)
