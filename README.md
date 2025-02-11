@@ -16,7 +16,6 @@ A mod to improve BTA! redstone :)
 - Activator block now allows using seeds directly on farmland
 - Redstone ore now redirects redstone dust
 - Levers are now placed parallel to the player's view instead of perpendicularly
-- TNT and door types now accept soft power as valid signals to activate/deactivate
 
 ### Fixes
 - Redstone wire now properly handles redstone redirection
@@ -29,6 +28,7 @@ A mod to improve BTA! redstone :)
 - Repeaters no longer send a 1 tick pulse when placed next to a powered block (breaks repeater auto-powering with `/setblock`, toggleable with the gamerule `removeInitialRepeaterUpdate`)
 - Redstone Jack o' lanterns no longer redirect redstone on all sides
 - Trapdoors no longer close when adjacent blocks are updated
+- TNT and door types now properly handle valid signals to activate/deactivate
 
 ## To-do list
 
