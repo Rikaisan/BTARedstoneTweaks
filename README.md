@@ -27,7 +27,7 @@ A mod to improve BTA! redstone :)
 - Repeaters now send updates when removed
 - Repeaters no longer send a 1 tick pulse when placed next to a powered block (breaks repeater auto-powering with `/setblock`, toggleable with the gamerule `removeInitialRepeaterUpdate`)
 - Redstone Jack o' lanterns no longer redirect redstone on all sides
-- TNT now properly handle valid signals to activate/deactivate
+- TNT now properly handles valid signals to activate
 
 ## To-do list
 
