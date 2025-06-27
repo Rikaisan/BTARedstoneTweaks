@@ -20,6 +20,7 @@ import net.minecraft.core.world.WorldSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -99,6 +100,7 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 			World world = (World) worldSource;
 
 			int meta = world.getBlockMetadata(x, y, z);
+			world.sendGlobalMessage("Redstone meta: " + meta);
 			int direction = (meta & (15 << 4)) >> 4; // 0b00000000 00000000 00000000 DDDD0000
 
 			int newDirectionNorth = negZShouldConnectTo ? 1 : 0;
@@ -111,7 +113,10 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 				newDirection <<= 4;
 				meta &= (~(15 << 4)); // Mask out direction bits
 				meta |= newDirection;
+//				world.noNeighborUpdate = true;
 				world.setBlockMetadata(x, y, z, meta);
+//				world.markBlocksDirty(x, y, z, x, y, z);
+//				world.noNeighborUpdate = false;
 			}
 		}
 
@@ -129,6 +134,32 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 			|| side == Side.SOUTH && posZShouldConnectTo && !isXConnected
 			|| side == Side.WEST && negXShouldConnectTo && !isZConnected
 			|| side == Side.EAST && posXShouldConnectTo && !isZConnected);
+	}
+
+	@Redirect(method = "updatePowerStrength(Lnet/minecraft/core/world/World;IIIIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockMetadataWithNotify(IIII)V"))
+	void setWireSignal(World instance, int x, int y, int z, int power) {
+		int direction = instance.getBlockMetadata(x, y, z) & 240; // 0b00000000 00000000 00000000 DDDD0000
+		instance.setBlockMetadataWithNotify(x, y, z, power | direction);
+	}
+
+	@Redirect(method = "getSignal(Lnet/minecraft/core/world/WorldSource;IIILnet/minecraft/core/util/helper/Side;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/WorldSource;getBlockMetadata(III)I"))
+	int getRawSignal(WorldSource instance, int x, int y, int z) {
+		return instance.getBlockMetadata(x, y, z) & 15;
+	}
+
+	@Redirect(method = "updatePowerStrength(Lnet/minecraft/core/world/World;IIIIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
+	int getRawSignal2(World instance, int x, int y, int z) {
+		return instance.getBlockMetadata(x, y, z) & 15;
+	}
+
+	@Redirect(method = "checkTarget(Lnet/minecraft/core/world/World;IIII)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
+	int getRawSignal3(World instance, int x, int y, int z) {
+		return instance.getBlockMetadata(x, y, z) & 15;
+	}
+
+	@Redirect(method = "animationTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
+	int getRawSignal4(World instance, int x, int y, int z) {
+		return instance.getBlockMetadata(x, y, z) & 15;
 	}
 
 	@ModifyExpressionValue(method = "shouldConnectTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;isSignalSource()Z"))
