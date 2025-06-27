@@ -8,6 +8,8 @@ import net.minecraft.core.block.material.Material;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = BlockLogicRepeater.class, remap = false)
 public abstract class BlockLogicRepeaterMixin extends BlockLogic {
@@ -37,5 +39,10 @@ public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 		if (!world.getGameRuleValue(RedstoneTweaks.REMOVE_INITIAL_REPEATER_UPDATE)) {
 			original.call(world, x, y, z);
 		}
+	}
+
+	@Redirect(method = "isGettingPower(Lnet/minecraft/core/world/World;IIII)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
+	int getRedstoneSignal(World instance, int x, int y, int z) {
+		return instance.getBlockMetadata(x, y, z) & 15;
 	}
 }
