@@ -27,6 +27,8 @@ public class WireNode extends Node {
 	int virtualPower;
 	/** The power level received from non-wire components. */
 	int externalPower;
+	/** The wire shape stored as 4 additional bits. */
+	int direction;
 	/**
 	 * A 4-bit number that keeps track of the power flow of the wires that give this
 	 * wire its power level.
@@ -52,7 +54,8 @@ public class WireNode extends Node {
 
 		this.connections = new WireConnectionManager(this);
 
-		this.virtualPower = this.currentPower = this.state.get();
+		this.virtualPower = this.currentPower = this.state.get() & 15;
+		this.direction = this.state.get() & 240;
 		this.priority = priority();
 	}
 
@@ -113,7 +116,7 @@ public class WireNode extends Node {
 		}
 
 		currentPower = Mth.clamp(virtualPower, Redstone.SIGNAL_MIN, Redstone.SIGNAL_MAX);
-		state = state.set(currentPower);
+		state = state.set(currentPower | direction);
 
 		return WorldHelper.setWireState(world, pos, state);
 	}
