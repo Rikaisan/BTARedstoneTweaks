@@ -100,7 +100,6 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 			World world = (World) worldSource;
 
 			int meta = world.getBlockMetadata(x, y, z);
-			world.sendGlobalMessage("Redstone meta: " + meta);
 			int direction = (meta & (15 << 4)) >> 4; // 0b00000000 00000000 00000000 DDDD0000
 
 			int newDirectionNorth = negZShouldConnectTo ? 1 : 0;
@@ -113,10 +112,7 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 				newDirection <<= 4;
 				meta &= (~(15 << 4)); // Mask out direction bits
 				meta |= newDirection;
-//				world.noNeighborUpdate = true;
 				world.setBlockMetadata(x, y, z, meta);
-//				world.markBlocksDirty(x, y, z, x, y, z);
-//				world.noNeighborUpdate = false;
 			}
 		}
 
