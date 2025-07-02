@@ -4,6 +4,7 @@ import alternate.current.util.BlockPos;
 import alternate.current.util.BlockState;
 import alternate.current.util.Mth;
 import alternate.current.util.Redstone;
+import com.rikaisan.AdditionalRedstoneWireLogic;
 import net.minecraft.core.block.Blocks;
 import net.minecraft.core.world.World;
 
@@ -54,8 +55,8 @@ public class WireNode extends Node {
 
 		this.connections = new WireConnectionManager(this);
 
-		this.virtualPower = this.currentPower = this.state.get() & 15;
-		this.direction = this.state.get() & 240;
+		this.virtualPower = this.currentPower = this.state.get() & AdditionalRedstoneWireLogic.MASK_POWER;
+		this.direction = this.state.get() & AdditionalRedstoneWireLogic.MASK_DIRECTION;
 		this.priority = priority();
 	}
 

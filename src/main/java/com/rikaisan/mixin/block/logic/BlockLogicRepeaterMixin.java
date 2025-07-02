@@ -2,6 +2,7 @@ package com.rikaisan.mixin.block.logic;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.rikaisan.AdditionalRedstoneWireLogic;
 import com.rikaisan.RedstoneTweaks;
 import net.minecraft.core.block.*;
 import net.minecraft.core.block.material.Material;
@@ -43,6 +44,6 @@ public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 
 	@Redirect(method = "isGettingPower(Lnet/minecraft/core/world/World;IIII)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRedstoneSignal(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & 15;
+		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 }

@@ -100,17 +100,16 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 			World world = (World) worldSource;
 
 			int meta = world.getBlockMetadata(x, y, z);
-			int direction = (meta & (15 << 4)) >> 4; // 0b00000000 00000000 00000000 DDDD0000
+			int direction = meta & AdditionalRedstoneWireLogic.MASK_DIRECTION;
 
-			int newDirectionNorth = negZShouldConnectTo ? 1 : 0;
-			int newDirectionSouth = (posZShouldConnectTo ? 1 : 0) << 1;
-			int newDirectionWest = (negXShouldConnectTo ? 1 : 0) << 2;
-			int newDirectionEast = (posXShouldConnectTo ? 1 : 0) << 3;
+			int newDirectionNorth = (negZShouldConnectTo ? 1 : 0) << 4;
+			int newDirectionSouth = (posZShouldConnectTo ? 1 : 0) << 5;
+			int newDirectionWest  = (negXShouldConnectTo ? 1 : 0) << 6;
+			int newDirectionEast  = (posXShouldConnectTo ? 1 : 0) << 7;
 			int newDirection = newDirectionNorth | newDirectionSouth | newDirectionWest | newDirectionEast;
 
 			if (direction != newDirection) {
-				newDirection <<= 4;
-				meta &= (~(15 << 4)); // Mask out direction bits
+				meta &= ~AdditionalRedstoneWireLogic.MASK_DIRECTION;
 				meta |= newDirection;
 				world.setBlockMetadata(x, y, z, meta);
 			}
@@ -134,28 +133,28 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 
 	@Redirect(method = "updatePowerStrength(Lnet/minecraft/core/world/World;IIIIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockMetadataWithNotify(IIII)V"))
 	void setWireSignal(World instance, int x, int y, int z, int power) {
-		int direction = instance.getBlockMetadata(x, y, z) & 240; // 0b00000000 00000000 00000000 DDDD0000
+		int direction = instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_DIRECTION;
 		instance.setBlockMetadataWithNotify(x, y, z, power | direction);
 	}
 
 	@Redirect(method = "getSignal(Lnet/minecraft/core/world/WorldSource;IIILnet/minecraft/core/util/helper/Side;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/WorldSource;getBlockMetadata(III)I"))
 	int getRawSignal(WorldSource instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & 15;
+		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@Redirect(method = "updatePowerStrength(Lnet/minecraft/core/world/World;IIIIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRawSignal2(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & 15;
+		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@Redirect(method = "checkTarget(Lnet/minecraft/core/world/World;IIII)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRawSignal3(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & 15;
+		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@Redirect(method = "animationTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRawSignal4(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & 15;
+		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@ModifyExpressionValue(method = "shouldConnectTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;isSignalSource()Z"))
