@@ -16,6 +16,8 @@ A mod to improve BTA! redstone :)
 - Activator block now allows using seeds directly on farmland
 - Redstone ore now redirects redstone dust
 - Levers are now placed parallel to the player's view instead of perpendicularly
+- Fence gates can now be affected by redstone
+- Mesh Blocks and Gold Mesh Blocks can now be powered to block items going through them
 
 ### Fixes
 - Redstone wire now properly handles redstone redirection
@@ -34,8 +36,6 @@ A mod to improve BTA! redstone :)
 ### Defined
 - Allow some sort for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs or another glass type?
 - Fix update queue being reset on dimension change and world reload (On hold, would have to overhaul a big part of the game)
-- Allow fence gates to be affected by redstone
-- Allow powering Mesh Blocks to block them
 
 ### Maybe
 - ~~Add observer functionality to motion sensor~~ Matcher Block planned for vanilla BTA! in 7.4
