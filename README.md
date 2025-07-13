@@ -17,7 +17,7 @@ A mod to improve BTA! redstone :)
 - Redstone ore now redirects redstone dust
 - Levers are now placed parallel to the player's view instead of perpendicularly
 - Fence gates can now be affected by redstone
-- Mesh Blocks and Gold Mesh Blocks can now be powered to block items going through them
+- Mesh Blocks and Gold Mesh Blocks can now be powered to block items from going through them
 
 ### Fixes
 - Redstone wire now properly handles redstone redirection
