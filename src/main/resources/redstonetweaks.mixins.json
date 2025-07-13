@@ -10,6 +10,8 @@
     "WorldMixin",
     "block.logic.BlockLogicFenceGateMixin",
     "block.logic.BlockLogicLeverMixin",
+    "block.logic.BlockLogicMeshGoldMixin",
+    "block.logic.BlockLogicMeshMixin",
     "block.logic.BlockLogicOreRedstoneMixin",
     "block.logic.BlockLogicRedstoneMixin",
     "block.logic.BlockLogicRepeaterMixin",
