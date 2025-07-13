@@ -38,8 +38,8 @@ A mod to improve BTA! redstone :)
 - Allow powering Mesh Blocks to block them
 
 ### Maybe
-- Add observer functionality to motion sensor
-- Make activator be able to retake some items like discs from jukeboxes ot items from golden meshes
+- ~~Add observer functionality to motion sensor~~ Observer block planned for vanilla BTA! in 7.4
+- Make activator be able to retake some items like discs from jukeboxes or items from golden meshes
 - Allow a slot to be used twice on an activator (e.g. bucket in a sequence of steps would be able to be handled properly)
 - Activator rail
 - Minecart with basket, going over mesh blocks drops items in order and over golden mesh blocks only a certain item.
