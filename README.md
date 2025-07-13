@@ -33,8 +33,9 @@ A mod to improve BTA! redstone :)
 
 ### Defined
 - Allow some sort for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs or another glass type?
-- Fix update queue being reset on dimension change and world reload
+- Fix update queue being reset on dimension change and world reload (On hold, would have to overhaul a big part of the game)
 - Allow fence gates to be affected by redstone
+- Allow powering Mesh Blocks to block them
 
 ### Maybe
 - Add observer functionality to motion sensor
