@@ -13,9 +13,8 @@ public class RedstoneTweaks implements ModInitializer, RecipeEntrypoint, GameSta
     public static final String MOD_ID = "redstonetweaks";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static GameRuleBoolean REDSTONE_BLOCK_HARD_POWER = GameRules.register(new GameRuleBoolean("redstoneBlockHardPower", false));
-	public static GameRuleBoolean REMOVE_INITIAL_REPEATER_UPDATE = GameRules.register(new GameRuleBoolean("removeInitialRepeaterUpdate", true));
-	public static GameRuleBoolean USE_ALTERNATE_CURRENT = GameRules.register(new GameRuleBoolean("useAlternateCurrent", true));
+	public static GameRuleBoolean REDSTONE_BLOCK_HARD_POWER = GameRules.register(new GameRuleBoolean("redstoneBlockHardPower", "redstone_tweaks.redstone_block_hard_power", false));
+	public static GameRuleBoolean REMOVE_INITIAL_REPEATER_UPDATE = GameRules.register(new GameRuleBoolean("removeInitialRepeaterUpdate", "redstone_tweaks.remove_initial_repeater_update", true));
 
 	@Override
     public void onInitialize() {

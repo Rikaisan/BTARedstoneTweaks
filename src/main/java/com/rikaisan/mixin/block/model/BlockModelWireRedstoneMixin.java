@@ -12,6 +12,8 @@ import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogic;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.WorldSource;
+import net.minecraft.core.world.pos.TilePos;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -45,7 +47,7 @@ public abstract class BlockModelWireRedstoneMixin<T extends BlockLogic> extends 
 			target = "Lnet/minecraft/core/world/WorldSource;isBlockNormalCube(III)Z"
 		))
 	public boolean isBlockNormalCube(WorldSource instance, int x, int y, int z) {
-		return instance.isBlockOpaqueCube(x, y, z);
+		return instance.isBlockOpaqueCube(new TilePos(x, y, z));
 	}
 
 

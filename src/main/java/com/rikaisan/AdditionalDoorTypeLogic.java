@@ -1,6 +1,7 @@
 package com.rikaisan;
 
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePos;
 
 public class AdditionalDoorTypeLogic {
 	public static final int MASK_POWERED = 0b10000;
@@ -25,7 +26,7 @@ public class AdditionalDoorTypeLogic {
 	public static int savePowered(World world, int x, int y, int z, int meta, boolean isPowered, boolean isPreviouslyPowered) {
 		if (isPowered == isPreviouslyPowered) return meta;
 		meta = AdditionalDoorTypeLogic.setPowered(meta, isPowered);
-		world.setBlockMetadata(x, y, z, meta);
+		world.setBlockData(new TilePos(x, y, z), meta);
 		return meta;
 	}
 }

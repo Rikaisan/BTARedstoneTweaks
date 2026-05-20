@@ -13,6 +13,8 @@ import net.minecraft.core.item.ItemSeeds;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePos;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -52,7 +54,7 @@ public abstract class ItemSeedsMixin {
 		double yPlaced,
 		Operation<Boolean> original
 	) {
-		Block<?> block = world.getBlock(blockX, blockY, blockZ);
+		Block<?> block = world.getBlockType(new TilePos(blockX, blockY, blockZ));
 		if (block != null && block.getLogic() instanceof BlockLogicFarmland) {
 			blockY += 1;
 		}

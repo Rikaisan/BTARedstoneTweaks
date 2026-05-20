@@ -8,6 +8,8 @@ import net.minecraft.core.block.*;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePos;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -28,10 +30,10 @@ public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 	// which prevents redstone components on the other wide of the target block from staying powered.
 	@Override
 	public void onBlockRemoved(World world, int x, int y, int z, int data) {
-		Side front = BlockLogicBed.headBlockToFootBlockMap[BlockLogicBed.footToHeadMap[data & 3]];
-		world.notifyBlocksOfNeighborChange(x + front.getOffsetX(), y + front.getOffsetY(), z + front.getOffsetZ(), id());
-		Side back = front.getOpposite();
-		world.notifyBlocksOfNeighborChange(x + back.getOffsetX(), y + back.getOffsetY(), z + back.getOffsetZ(), id());
+		Side front = BlockLogicBed.footToHeadMap[data & 3];
+		world.notifyBlocksOfNeighborChange(new TilePos(x + front.offsetX(), y + front.offsetY(), z + front.offsetZ()), this.block);
+		Side back = front.opposite();
+		world.notifyBlocksOfNeighborChange(new TilePos(x + back.offsetX(), y + back.offsetY(), z + back.offsetZ()), this.block);
 	}
 
 	// Remove initial repeater update to prevent a random pulse on certain circumstances, but breaks /setBlock
@@ -44,6 +46,6 @@ public abstract class BlockLogicRepeaterMixin extends BlockLogic {
 
 	@Redirect(method = "isGettingPower(Lnet/minecraft/core/world/World;IIII)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRedstoneSignal(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
+		return instance.getBlockData(new TilePos(x, y, z)) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 }

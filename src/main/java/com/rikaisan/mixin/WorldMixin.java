@@ -1,12 +1,12 @@
 package com.rikaisan.mixin;
 
-import alternate.current.interfaces.IAlternateCurrentWorld;
-import alternate.current.wire.WireHandler;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.Blocks;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.WorldSource;
+import net.minecraft.core.world.pos.TilePos;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -14,17 +14,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = World.class, remap = false)
-public abstract class WorldMixin implements IAlternateCurrentWorld {
-
-	@Unique
-	private final WireHandler wireHandler = new WireHandler((World)(Object)this);
+public abstract class WorldMixin {
 
 	@Redirect(method = "getSignal(IIILnet/minecraft/core/util/helper/Side;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;getSignal(Lnet/minecraft/core/world/WorldSource;IIILnet/minecraft/core/util/helper/Side;)Z"))
 	private boolean getSignal(Block<?> instance, WorldSource worldSource, int x, int y, int z, Side side) {
 		if (instance == Blocks.PUMPKIN_REDSTONE) {
-			return pumpkinHasDirectSignal(x, y, z) || instance.getSignal(worldSource, x, y, z, side);
+			return pumpkinHasDirectSignal(x, y, z) || instance.isEmittingSignal(worldSource, new TilePos(x, y, z), side);
 		} else {
-			return instance.getSignal(worldSource, x, y, z, side);
+			return instance.isEmittingSignal(worldSource, new TilePos(x, y, z), side);
 		}
 	}
 
@@ -32,8 +29,8 @@ public abstract class WorldMixin implements IAlternateCurrentWorld {
 	@Unique
 	private boolean pumpkinHasDirectSignal(int x, int y, int z) {
 		for (Side side : Side.sides) {
-			if(Side.getSideById(getBlockMetadata(x, y, z)) == side) continue;
-			if (getDirectSignal(x + side.getOffsetX(), y + side.getOffsetY(), z + side.getOffsetZ(), side)) {
+			if(Side.fromId(getBlockMetadata(x, y, z)) == side) continue;
+			if (getDirectSignal(x + side.offsetX(), y + side.offsetY(), z + side.offsetZ(), side)) {
 				return true;
 			}
 		}
@@ -46,8 +43,5 @@ public abstract class WorldMixin implements IAlternateCurrentWorld {
 
 	@Shadow
 	public abstract int getBlockMetadata(int x, int y, int z);
-
-	@Override
-	public WireHandler redstoneTweaks$getWireHandler() { return wireHandler; }
 }
 

@@ -1,8 +1,5 @@
 package com.rikaisan.mixin.block.logic;
 
-import alternate.current.interfaces.IAlternateCurrentWorld;
-import alternate.current.util.BlockPos;
-import alternate.current.util.BlockState;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -10,18 +7,18 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.rikaisan.AdditionalRedstoneWireLogic;
-import com.rikaisan.RedstoneTweaks;
 import net.minecraft.core.block.*;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.util.helper.Axis;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.WorldSource;
+import net.minecraft.core.world.pos.TilePos;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = BlockLogicWireRedstone.class, remap = false)
@@ -30,54 +27,6 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 	public BlockLogicWireRedstoneMixin(Block<?> block, Material material) {
 		super(block, material);
 	}
-
-	// --------------------------------------------------------------------------------
-	// Alternate Current
-	// --------------------------------------------------------------------------------
-
-	@WrapOperation(
-		method = "onBlockPlacedByWorld(Lnet/minecraft/core/world/World;III)V",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;updatePowerStrength(Lnet/minecraft/core/world/World;III)V"
-		)
-	)
-	private void onBlockPlacedByWorld(BlockLogicWireRedstone instance, World world, int x, int y, int z, Operation<Void> original) {
-		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
-			((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireAdded(new BlockPos(x, y, z));
-		} else {
-			original.call(instance, world, x, y, z);
-		}
-	}
-
-	@WrapOperation(
-		method = "onBlockRemoved(Lnet/minecraft/core/world/World;IIII)V",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/core/block/BlockLogicWireRedstone;updatePowerStrength(Lnet/minecraft/core/world/World;III)V"
-		)
-	)
-	private void onBlockRemoved(BlockLogicWireRedstone instance, World world, int x, int y, int z, Operation<Void> original) {
-		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
-			((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireRemoved(new BlockPos(x, y, z), new BlockState(this.id(), world.getBlockMetadata(x, y, z)));
-		} else {
-			original.call(instance, world, x, y, z);
-		}
-	}
-
-	@Inject(
-		method = "onNeighborBlockChange(Lnet/minecraft/core/world/World;IIII)V",
-		at = @At("HEAD"),
-		cancellable = true
-	)
-	private void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockId, CallbackInfo ci) {
-		if (world.getGameRuleValue(RedstoneTweaks.USE_ALTERNATE_CURRENT)) {
-			if (((IAlternateCurrentWorld)world).redstoneTweaks$getWireHandler().onWireUpdated(new BlockPos(x, y, z))) {
-				ci.cancel(); // needed to fix duplication bugs
-			}
-		}
-	}
-
 
 	// --------------------------------------------------------------------------------
 
@@ -99,7 +48,7 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 		if (worldSource instanceof World) {
 			World world = (World) worldSource;
 
-			int meta = world.getBlockMetadata(x, y, z);
+			int meta = world.getBlockData(new TilePos(x, y, z));
 			int direction = meta & AdditionalRedstoneWireLogic.MASK_DIRECTION;
 
 			int newDirectionNorth = (negZShouldConnectTo ? 1 : 0) << 4;
@@ -111,14 +60,14 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 			if (direction != newDirection) {
 				meta &= ~AdditionalRedstoneWireLogic.MASK_DIRECTION;
 				meta |= newDirection;
-				world.setBlockMetadata(x, y, z, meta);
+				world.setBlockData(new TilePos(x, y, z), meta);
 			}
 		}
 
 
 		boolean isXConnected = posXShouldConnectTo || negXShouldConnectTo;
 		boolean isZConnected = posZShouldConnectTo || negZShouldConnectTo;
-		cir.setReturnValue(!isZConnected && !isXConnected && side.getAxis() != Axis.Y // Default single dust
+		cir.setReturnValue(!isZConnected && !isXConnected && side.axis() != Axis.Y // Default single dust
 			// When the signal request comes from a block that dust connects to (usually power sources)
 			|| side == Side.SOUTH && negZShouldConnectTo
 			|| side == Side.NORTH && posZShouldConnectTo
@@ -133,28 +82,28 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 
 	@Redirect(method = "updatePowerStrength(Lnet/minecraft/core/world/World;IIIIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockMetadataWithNotify(IIII)V"))
 	void setWireSignal(World instance, int x, int y, int z, int power) {
-		int direction = instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_DIRECTION;
-		instance.setBlockMetadataWithNotify(x, y, z, power | direction);
+		int direction = instance.getBlockData(new TilePos(x, y, z)) & AdditionalRedstoneWireLogic.MASK_DIRECTION;
+		instance.setBlockDataNotify(new TilePos(x, y, z), power | direction);
 	}
 
 	@Redirect(method = "getSignal(Lnet/minecraft/core/world/WorldSource;IIILnet/minecraft/core/util/helper/Side;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/WorldSource;getBlockMetadata(III)I"))
 	int getRawSignal(WorldSource instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
+		return instance.getBlockData(new TilePos(x, y, z)) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@Redirect(method = "updatePowerStrength(Lnet/minecraft/core/world/World;IIIIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRawSignal2(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
+		return instance.getBlockData(new TilePos(x, y, z)) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@Redirect(method = "checkTarget(Lnet/minecraft/core/world/World;IIII)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRawSignal3(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
+		return instance.getBlockData(new TilePos(x, y, z)) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@Redirect(method = "animationTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;getBlockMetadata(III)I"))
 	int getRawSignal4(World instance, int x, int y, int z) {
-		return instance.getBlockMetadata(x, y, z) & AdditionalRedstoneWireLogic.MASK_POWER;
+		return instance.getBlockData(new TilePos(x, y, z)) & AdditionalRedstoneWireLogic.MASK_POWER;
 	}
 
 	@ModifyExpressionValue(method = "shouldConnectTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;isSignalSource()Z"))
@@ -166,10 +115,10 @@ public abstract class BlockLogicWireRedstoneMixin extends BlockLogic {
 	@Inject(method = "shouldConnectTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/WorldSource;getBlockMetadata(III)I", ordinal = 1), cancellable = true)
 	private static void connectToFrontBackRepeater(WorldSource worldSource, int x, int y, int z, int data, CallbackInfoReturnable<Boolean> cir) {
 		// Get the requested side.
-		Side source = BlockLogicBed.headBlockToFootBlockMap[BlockLogicBed.footToHeadMap[data]];
+		Side source = BlockLogicBed.footToHeadMap[data];
 		// Get the side the repeater is facing.
-		Side target = BlockLogicBed.headBlockToFootBlockMap[worldSource.getBlockMetadata(x, y, z) & 3];
-		cir.setReturnValue(target == source || target == source.getOpposite());
+		Side target = BlockLogicBed.footToHeadMap[worldSource.getBlockData(new TilePos(x, y, z)) & 3];
+		cir.setReturnValue(target == source || target == source.opposite());
 	}
 
 	/// Required for setting the repeater to be a signal source.
