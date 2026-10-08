@@ -10,8 +10,7 @@
     "block.logic.BlockLogicLeverMixin",
     "block.logic.BlockLogicMeshGoldMixin",
     "block.logic.BlockLogicMeshMixin",
-    "block.logic.BlockLogicRedstoneMixin",
-    "block.logic.BlockLogicRepeaterMixin"
+    "block.logic.BlockLogicRedstoneMixin"
   ],
   "client": [
     "screen.ScreenActivatorMixin"

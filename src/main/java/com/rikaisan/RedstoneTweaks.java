@@ -12,7 +12,6 @@ public class RedstoneTweaks implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static GameRuleBoolean REDSTONE_BLOCK_HARD_POWER = GameRules.register(new GameRuleBoolean("redstoneBlockHardPower", "redstone_tweaks.redstone_block_hard_power", false));
-	public static GameRuleBoolean REMOVE_INITIAL_REPEATER_UPDATE = GameRules.register(new GameRuleBoolean("removeInitialRepeaterUpdate", "redstone_tweaks.remove_initial_repeater_update", true));
 
 	@Override
     public void onInitialize() {

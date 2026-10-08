@@ -13,9 +13,7 @@ A mod to improve BTA! redstone :)
 - Mesh Blocks and Gold Mesh Blocks can now be powered to block items from going through them
 
 ### Fixes
-- Repeaters now properly soft power some blocks and redstone components
-- Repeaters now send updates when removed
-- Repeaters no longer send a 1 tick pulse when placed next to a powered block (breaks repeater auto-powering with `/setblock`, toggleable with the gamerule `removeInitialRepeaterUpdate`)
+- All our fixes were merged into BTA! 8.0 :D
 
 ## Merged to BTA!
 Some of our changes were merged into base BTA! and therefore are no longer included in our mod, here's a list of changes no longer included in Redstone Tweaks:
@@ -36,6 +34,9 @@ Some of our changes were merged into base BTA! and therefore are no longer inclu
 - Fence gates can now be affected by redstone
 - TNT now properly handles valid signals to activate
 - Redstone ore now redirects redstone dust
+- Repeaters now properly soft power some blocks and redstone components
+- Repeaters now send updates when removed
+- Repeaters no longer send a 1 tick pulse when placed next to a powered block (breaks repeater auto-powering with `/setblock`, ~~toggleable with the gamerule `removeInitialRepeaterUpdate`~~)
 
 ## To-do list
 
