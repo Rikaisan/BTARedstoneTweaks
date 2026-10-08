@@ -9,7 +9,6 @@ A mod to improve BTA! redstone :)
 - Activator block now allows using left click to lock/unlock slots
 - Activator block now allows unlocking slots while holding an item
 - Activator block now allows locking/unlocking all unused slots with middle click
-- Activator block now allows using seeds directly on farmland
 - Redstone ore now redirects redstone dust
 - Levers are now placed parallel to the player's view instead of perpendicularly
 - Fence gates can now be affected by redstone
@@ -24,7 +23,7 @@ A mod to improve BTA! redstone :)
 ## Merged to BTA!
 Some of our changes were merged into base BTA! and therefore are no longer included in our mod, here's a list of changes no longer included in Redstone Tweaks:
 
-### Merged in 8.0
+### Merged in BTA! 8.0+
 
 - Redstone wire now uses the [Alternate Current](<https://www.curseforge.com/minecraft/mc-mods/alternate-current>) efficient and non-locational redstone dust implementation (toggleable with the `useAlternateCurrent` gamerule)
 - Redstone Jack o' lanterns behaves as a solid block, allowing the block to be powered
@@ -36,16 +35,15 @@ Some of our changes were merged into base BTA! and therefore are no longer inclu
 - Redstone Jack o' lanterns no longer redirect redstone on all sides
 - Redstone wire now properly handles redstone redirection
 - Redstone wire now properly sends updates when its direction changes
+- Activator block now allows using seeds directly on farmland
 
 
 ## To-do list
 
 ### Defined
 - Allow some sort for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs or another glass type?
-- Fix update queue being reset on dimension change and world reload (On hold, would have to overhaul a big part of the game)
 
 ### Maybe
-- ~~Add observer functionality to motion sensor~~ Matcher Block planned for vanilla BTA! in 7.4
 - Make activator be able to retake some items like discs from jukeboxes or items from golden meshes
 - Allow a slot to be used twice on an activator (e.g. bucket in a sequence of steps would be able to be handled properly)
 - Activator rail

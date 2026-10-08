@@ -14,8 +14,7 @@
     "block.logic.BlockLogicOreRedstoneMixin",
     "block.logic.BlockLogicRedstoneMixin",
     "block.logic.BlockLogicRepeaterMixin",
-    "block.logic.BlockLogicTNTMixin",
-    "item.ItemSeedsMixin"
+    "block.logic.BlockLogicTNTMixin"
   ],
   "client": [
     "screen.ScreenActivatorMixin"
