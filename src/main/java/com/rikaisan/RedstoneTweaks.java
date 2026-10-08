@@ -5,11 +5,9 @@ import net.minecraft.core.data.gamerule.GameRuleBoolean;
 import net.minecraft.core.data.gamerule.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import turniplabs.halplibe.util.GameStartEntrypoint;
-import turniplabs.halplibe.util.RecipeEntrypoint;
 
 
-public class RedstoneTweaks implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
+public class RedstoneTweaks implements ModInitializer {
     public static final String MOD_ID = "redstonetweaks";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
@@ -20,24 +18,4 @@ public class RedstoneTweaks implements ModInitializer, RecipeEntrypoint, GameSta
     public void onInitialize() {
         LOGGER.info("Redstone Tweaks initialized.");
     }
-
-	@Override
-	public void onRecipesReady() {
-
-	}
-
-	@Override
-	public void initNamespaces() {
-
-	}
-
-	@Override
-	public void beforeGameStart() {
-
-	}
-
-	@Override
-	public void afterGameStart() {
-
-	}
 }

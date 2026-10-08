@@ -7,7 +7,6 @@
   "package": "com.rikaisan.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "WorldMixin",
     "block.logic.BlockLogicFenceGateMixin",
     "block.logic.BlockLogicLeverMixin",
     "block.logic.BlockLogicMeshGoldMixin",
