@@ -19,8 +19,6 @@ btaChannel = "release"
 loader = "0.18.4-bta.11"
 # Check this on https://github.com/Turnip-Labs/ModMenu/releases/latest/
 modMenu = "5.0.2"
-# Check this on https://github.com/Turnip-Labs/bta-halplibe/releases/latest/
-halplibe = "6.2.0+8.0.1"
 # Check this on https://github.com/Better-than-Adventure/legacy-lwjgl3/releases/latest/
 legacyLwjgl = "1.0.6"
 ##########################################################################
@@ -36,7 +34,6 @@ jomlPrimitivess = "1.10.0"
 
 [libraries]
 loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "loader" }
-halplibe = { group = "turniplabs", name = "halplibe", version.ref = "halplibe" }
 modMenu = { group = "turniplabs", name = "modmenu-bta", version.ref = "modMenu" }
 legacyLwjgl = { group = "com.github.Better-than-Adventure", name = "legacy-lwjgl3", version.ref = "legacyLwjgl" }
 slf4jApi = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4jApi" }

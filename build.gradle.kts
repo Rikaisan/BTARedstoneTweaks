@@ -37,7 +37,6 @@ dependencies {
 	// Required at compilation & runtime
 	// included in builds as a runtime dependency
 	implementation(libs.loader)
-	implementation(libs.halplibe) // If you do not need halplibe you can delete this line
 
 	// Only required at compilation
 	// provides documentation, can be removed if that isn't needed
@@ -107,9 +106,9 @@ tasks {
 	}
 	processResources {
 		val resourceMap = mapOf(
+			"mcversion" to libs.versions.bta.get(),
 			"version" to modVersion,
 			"fabricloader" to libs.versions.loader.get(),
-			"halplibe" to libs.versions.halplibe.get(),
 			"java" to libs.versions.java.get(),
 			"modmenu" to libs.versions.modMenu.get()
 		)
