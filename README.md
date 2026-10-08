@@ -17,7 +17,6 @@ A mod to improve BTA! redstone :)
 - Repeaters now properly soft power some blocks and redstone components
 - Repeaters now send updates when removed
 - Repeaters no longer send a 1 tick pulse when placed next to a powered block (breaks repeater auto-powering with `/setblock`, toggleable with the gamerule `removeInitialRepeaterUpdate`)
-- TNT now properly handles valid signals to activate
 
 ## Merged to BTA!
 Some of our changes were merged into base BTA! and therefore are no longer included in our mod, here's a list of changes no longer included in Redstone Tweaks:
@@ -36,11 +35,13 @@ Some of our changes were merged into base BTA! and therefore are no longer inclu
 - Redstone wire now properly sends updates when its direction changes
 - Activator block now allows using seeds directly on farmland
 - Fence gates can now be affected by redstone
+- TNT now properly handles valid signals to activate
 
 
 ## To-do list
 
 ### Defined
+- Change door-type blocks behaviour when placed next to a powered block, as well as placing blocks next to them to update them.
 - Allow some sort for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs or another glass type?
 
 ### Maybe
