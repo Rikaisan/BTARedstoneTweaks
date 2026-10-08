@@ -5,10 +5,6 @@ A mod to improve BTA! redstone :)
 ## Tweaks
 
 ### Changes
-- Redstone wire is no longer redirected by diagonal power sources (e.g. lever at the side of the block the wire is on)  [This is NOT related to QC]
-- Redstone wire now uses the [Alternate Current](<https://www.curseforge.com/minecraft/mc-mods/alternate-current>) efficient and non-locational redstone dust implementation (toggleable with the `useAlternateCurrent` gamerule)
-- Redstone Jack o' lanterns behaves as a solid block, allowing the block to be powered
-- Redstone Jack o' lanterns isolate the front face from the rest of the redstone going though it
 - Redstone blocks no longer hard power adjacent blocks (toggleable with the gamerule `redstoneBlockHardPower`)
 - Activator block now allows using left click to lock/unlock slots
 - Activator block now allows unlocking slots while holding an item
@@ -20,16 +16,27 @@ A mod to improve BTA! redstone :)
 - Mesh Blocks and Gold Mesh Blocks can now be powered to block items from going through them
 
 ### Fixes
-- Redstone wire now properly handles redstone redirection
-- Redstone wire now properly sends updates when its direction changes
-- Redstone wire no longer visually connects to things it isn't logically connected to
-- Redstone wire now uses the same checks to visually connect diagonally downwards than upwards
-- Repeaters now properly connect to redstone dust
 - Repeaters now properly soft power some blocks and redstone components
 - Repeaters now send updates when removed
 - Repeaters no longer send a 1 tick pulse when placed next to a powered block (breaks repeater auto-powering with `/setblock`, toggleable with the gamerule `removeInitialRepeaterUpdate`)
-- Redstone Jack o' lanterns no longer redirect redstone on all sides
 - TNT now properly handles valid signals to activate
+
+## Merged to BTA!
+Some of our changes were merged into base BTA! and therefore are no longer included in our mod, here's a list of changes no longer included in Redstone Tweaks:
+
+### Merged in 8.0
+
+- Redstone wire now uses the [Alternate Current](<https://www.curseforge.com/minecraft/mc-mods/alternate-current>) efficient and non-locational redstone dust implementation (toggleable with the `useAlternateCurrent` gamerule)
+- Redstone Jack o' lanterns behaves as a solid block, allowing the block to be powered
+- Redstone Jack o' lanterns isolate the front face from the rest of the redstone going though it
+- Redstone wire is no longer redirected by diagonal power sources (e.g. lever at the side of the block the wire is on)  [This is NOT related to QC]
+- Redstone wire no longer visually connects to things it isn't logically connected to
+- Redstone wire now uses the same checks to visually connect diagonally downwards than upwards
+- Repeaters now properly connect to redstone dust
+- Redstone Jack o' lanterns no longer redirect redstone on all sides
+- Redstone wire now properly handles redstone redirection
+- Redstone wire now properly sends updates when its direction changes
+
 
 ## To-do list
 

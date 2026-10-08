@@ -15,11 +15,9 @@
     "block.logic.BlockLogicRedstoneMixin",
     "block.logic.BlockLogicRepeaterMixin",
     "block.logic.BlockLogicTNTMixin",
-    "block.logic.BlockLogicWireRedstoneMixin",
     "item.ItemSeedsMixin"
   ],
   "client": [
-    "block.model.BlockModelWireRedstoneMixin",
     "screen.ScreenActivatorMixin"
   ],
   "injectors": {
