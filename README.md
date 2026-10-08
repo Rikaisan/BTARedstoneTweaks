@@ -11,7 +11,6 @@ A mod to improve BTA! redstone :)
 - Activator block now allows locking/unlocking all unused slots with middle click
 - Redstone ore now redirects redstone dust
 - Levers are now placed parallel to the player's view instead of perpendicularly
-- Fence gates can now be affected by redstone
 - Mesh Blocks and Gold Mesh Blocks can now be powered to block items from going through them
 
 ### Fixes
@@ -36,6 +35,7 @@ Some of our changes were merged into base BTA! and therefore are no longer inclu
 - Redstone wire now properly handles redstone redirection
 - Redstone wire now properly sends updates when its direction changes
 - Activator block now allows using seeds directly on farmland
+- Fence gates can now be affected by redstone
 
 
 ## To-do list
