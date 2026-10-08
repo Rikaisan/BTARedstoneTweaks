@@ -41,7 +41,7 @@ Some of our changes were merged into base BTA! and therefore are no longer inclu
 ## To-do list
 
 ### Defined
-- Change door-type blocks behaviour when placed next to a powered block, as well as placing blocks next to them to update them.
+- Normalize door/trapdoor/fence gate behaviour when placed next to a powered block, as well as placing blocks next to them to update them.
 - Allow some sort for compact downwards wiring, just like upwards glass. The groundwork is already implemented, just need to choose a block :) maybe slabs or another glass type?
 
 ### Maybe
