@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.*;
 @Mixin(value = BlockLogicLever.class, remap = false)
 public class BlockLogicLeverMixin {
 
-	@Redirect(method = "onBlockPlacedByMob", at = @At(value = "FIELD", target = "Lnet/minecraft/core/util/helper/Axis;Z:Lnet/minecraft/core/util/helper/Axis;"))
+	@Redirect(method = "onPlacedByMob", at = @At(value = "FIELD", target = "Lnet/minecraft/core/util/helper/Axis;Z:Lnet/minecraft/core/util/helper/Axis;"))
 	private Axis useOtherAxis() {
 		return Axis.X;
 	}
