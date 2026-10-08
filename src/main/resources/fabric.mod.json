@@ -23,16 +23,7 @@
   "entrypoints": {
     "main": [
 			"com.rikaisan.RedstoneTweaks"
-    ],
-		"beforeGameStart": [
-			"com.rikaisan.RedstoneTweaks"
-		],
-		"afterGameStart": [
-			"com.rikaisan.RedstoneTweaks"
-		],
-		"recipesReady": [
-			"com.rikaisan.RedstoneTweaks"
-		]
+    ]
 	},
   "mixins": [
 		"redstonetweaks.mixins.json"
